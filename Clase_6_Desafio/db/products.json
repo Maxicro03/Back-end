@@ -1,0 +1,7 @@
+[
+    {"id": 1, "titulo": "Jamon", "descripcion": "Comida", "precio": 1500, "imagen": "Jamon.jpg", "code": "A12", "stock": 30},
+    {"id": 2, "titulo": "Queso", "descripcion": "Comida", "precio": 1200, "imagen": "Queso.jpg", "code": "A20", "stock": 40},
+    {"id": 3, "titulo": "Salame", "descripcion": "Comida", "precio": 1000, "imagen": "Salame.jpg", "code": "A15", "stock": 20},
+    {"id": 4, "titulo": "Pepsi", "descripcion": "Bebida", "precio": 800, "imagen": "Pepsi.jpg", "code": "B15", "stock": 10},
+    {"id": 5, "titulo": "Coca-Cola", "descripcion": "Bebida", "precio": 900, "imagen": "Coca_Cola.jpg", "code": "B17", "stock": 15}
+]

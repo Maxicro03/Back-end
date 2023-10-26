@@ -62,7 +62,7 @@ class ProductManager {
         if (index !== -1) {
             return this.#product[index]
         } else {
-            throw new Error('error al buscar: usuario no encontrado')
+            throw new Error('error al buscar: producto no encontrado')
         }
     }
 
@@ -75,7 +75,7 @@ class ProductManager {
         await this.#escribirLista()
         return nuevoProd
         } else {
-        throw new Error('error al actualizar: usuario no encontrado')
+        throw new Error('error al actualizar: producto no encontrado')
         }
     }
     
@@ -87,7 +87,7 @@ class ProductManager {
         await this.#escribirLista()
         return arrayConLosBorrados[0]
         } else {
-        throw new Error('error al borrar: usuario no encontrado')
+        throw new Error('error al borrar: producto no encontrado')
         }
   }
     
