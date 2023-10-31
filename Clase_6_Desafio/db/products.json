@@ -1,7 +1,17 @@
 [
-    {"id": 1, "titulo": "Jamon", "descripcion": "Comida", "precio": 1500, "imagen": "Jamon.jpg", "code": "A12", "stock": 30},
-    {"id": 2, "titulo": "Queso", "descripcion": "Comida", "precio": 1200, "imagen": "Queso.jpg", "code": "A20", "stock": 40},
-    {"id": 3, "titulo": "Salame", "descripcion": "Comida", "precio": 1000, "imagen": "Salame.jpg", "code": "A15", "stock": 20},
+    {"id": 1, "titulo": "Jamon", "descripcion": "Comida", "precio": 1500, "imagen": "Jamon.jpg", "code": "C12", "stock": 30},
+    {"id": 2, "titulo": "Queso", "descripcion": "Comida", "precio": 1200, "imagen": "Queso.jpg", "code": "C20", "stock": 40},
+    {"id": 3, "titulo": "Salame", "descripcion": "Comida", "precio": 1000, "imagen": "Salame.jpg", "code": "C15", "stock": 20},
     {"id": 4, "titulo": "Pepsi", "descripcion": "Bebida", "precio": 800, "imagen": "Pepsi.jpg", "code": "B15", "stock": 10},
-    {"id": 5, "titulo": "Coca-Cola", "descripcion": "Bebida", "precio": 900, "imagen": "Coca_Cola.jpg", "code": "B17", "stock": 15}
+    {"id": 5, "titulo": "Coca-Cola", "descripcion": "Bebida", "precio": 900, "imagen": "Coca_Cola.jpg", "code": "B17", "stock": 15},
+    {"id": 6, "titulo": "Papas Lays", "descripcion": "Snack", "precio": 500, "imagen": "Lays.jpg", "code": "S3", "stock": 20},
+    {"id": 7, "titulo": "Pan", "descripcion": "Comida", "precio": 800, "imagen": "Pan.jpg", "code": "C24", "stock": 20},
+    {"id": 8, "titulo": "Shampo", "descripcion": "Higiene", "precio": 1100, "imagen": "Shampo.jpg", "code": "H9", "stock": 50},
+    {"id": 9, "titulo": "Cepita", "descripcion": "Bebida", "precio": 800, "imagen": "Cepita.jpg", "code": "B25", "stock": 30},
+    {"id": 10, "titulo": "Palitos Salados", "descripcion": "Snack", "precio": 700, "imagen": "Palitos.jpg", "code": "S11", "stock": 40},
+    {"id": 11, "titulo": "Yerba Mate", "descripcion": "Infusión", "precio": 1000, "imagen": "Yerba.jpg", "code": "I1", "stock": 10},
+    {"id": 12, "titulo": "Té", "descripcion": "Infusión", "precio": 900, "imagen": "Té.jpg", "code": "I3", "stock": 20},
+    {"id": 13, "titulo": "Helado", "descripcion": "Postre", "precio": 1200, "imagen": "Helado.jpg", "code": "P10", "stock": 32},
+    {"id": 14, "titulo": "Medallon de Carne", "descripcion": "Comida", "precio": 1500, "imagen": "Medallon.jpg", "code": "C12", "stock": 15},
+    {"id": 15, "titulo": "Arroz", "descripcion": "Comida", "precio": 800, "imagen": "Arroz.jpg", "code": "C2", "stock": 40}
 ]
