@@ -6,11 +6,13 @@ const app = express()
 
 app.get("/products", async (req, res)=> {
     const description = req.query["description"]
+    const limit = req.query["limit"]
     const searchDescription = await productsManager.getProductByDescription(description) 
     if(description){
         res.json({products: searchDescription})
-    }
-    else{
+    } else if(limit){
+        res.json({products: await productsManager.getProductByLimit(limit)})
+    } else {
         res.json({ products: await productsManager.getProducts() })
     }
 })

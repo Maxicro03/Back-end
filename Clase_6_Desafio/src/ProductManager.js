@@ -14,6 +14,16 @@ export class ProductManager {
         return this.products
     }
 
+    async getProductByLimit(limit){
+        await this.#read()
+        const index = this.products
+        if(limit > 0){
+            return index.slice(0, limit)
+        } else {
+            return "error al buscar los productos"
+        }
+    }
+
     async getProductByid(id){
         await this.#read()
         const index = this.products.findIndex(p => p.id === id)
