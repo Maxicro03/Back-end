@@ -7,16 +7,20 @@ export class ProductsManager {
     }
 
     async #read () {
-       this.products = JSON.parse(await fs.readFile(this.path, "utf-8"))
+        try {
+            this.products = JSON.parse(await fs.readFile(this.path, "utf-8"))
+        } catch {
+            
+        }
     }
 
     async #writeList() {
-        await this.#read()
+        this.#read()
         await fs.writeFile(this.path, JSON.stringify(this.products))
     }
 
-    async #autoId () {
-        await this.#read()
+    #autoId () {
+        this.#read()
         if (this.products.length > 0) {
             return this.products[this.products.length - 1].id + 1
           } else {
@@ -24,15 +28,24 @@ export class ProductsManager {
           }
     }
 
-    async getProducts() {
-        await this.#read()
+    getProducts() {
+        this.#read()
         return this.products
     }
+
+    getProductsByLimit(limit) {
+        this.#read()
+        const index = this.products
+        if(limit <= 0) {
+            return "Error al buscar los productos"
+        } else {
+            return index.slice(0, limit)
+        }
+    }
     
-    async getProductsById(id) {
-        await this.#read()
+    getProductsById(id) {
+        this.#read()
         const index = this.products.filter(p => p.id === id)
-        console.log(index);
         if(index.length === 0){
             return "Error en la busqueda: no se encontro ningun producto con ese id"
         } else {
@@ -40,36 +53,77 @@ export class ProductsManager {
         }
     }
 
-    async addProduct({dateProducts}){
-        console.log(dateProducts)
-        await this.#read()
+    addProduct(dateProducts){ //lo que se hace en el addProduct es agarrar el objeto dateProduct y con ayuda del form se ordenan las categorias en this.dateProductFinaly por si se envian en un orden que no es el original se acomoden
+        this.#read()
         const id = this.#autoId()
-        const product = new Product({id, ...dateProducts, })
+        const keys = (Object.keys(dateProducts))
+        this.dateProductFinaly = {
+            title: null,
+            description:null,
+            price:null,
+            code:null,
+            stock:null,
+            category:null
+        }
+        for (let i = 0; i < Object.keys(this.dateProductFinaly).length; i++) {
+            if (this.dateProductFinaly[keys[i]] === undefined) {
+                return "Error al cargar: alguno de los campos asignados no corresponde"
+            } else {
+                this.dateProductFinaly[keys[i]] = dateProducts[keys[i]]
+            }
+        }
+        const dateLoading = this.dateProductFinaly
+        const product = new Product({id, ...dateLoading})
         this.products.push(product)
-        await this.#writeList()
+        this.#writeList()
         return product
     }
 
-    async updateProduct({id, dateProductUpdate}){
-        await this.#read()
+    updateProduct(id, dateProductUpdate){
+        this.#read()
+        const indexPosition = this.products.findIndex(p => p.id === id)
         const index = this.products.filter(p => p.id === id)
         if(index.length === 0){
-            return "Error en la busqueda: no se encontro ningun producto con ese id"
+            return "Error en la busqueda: no se encontro ningun producto con ese ID"
         } else {
-            for (let i = 0; i < dateProductUpdate.length; i++) {
-                const productToUpdate = this.products[index]
-                const update = dateProductUpdate[i]
-                const searchUpdate = productToUpdate.filter(p => p.key = update.key)
-                if(searchUpdate.length === 0){
-                    return "Error al actualizar"
+            const keys = (Object.keys(dateProductUpdate))
+            const keysLength = keys.length
+            const indexObject = {...index}
+            for (let i = 0; i < keysLength; i++) {
+                if (indexObject[0][keys[i]] === undefined) {
+                    return "Error al actualizar: alguno de los campos asignados no se encontro"
                 } else {
-                    searchUpdate.key = update.value
+                    indexObject[0][keys[i]] = dateProductUpdate[keys[i]]
                 }
-                
-                productToUpdate.value = update.value
             }
-            
+            this.products.splice(indexPosition, 1)
+            this.products.splice(indexPosition, 0, ...index)
+            this.#writeList()
+            return this.products
         }
 
+    }
+
+    deleteProduct(id){
+        this.#read()
+        const index = this.products.findIndex(p => p.id === id)
+        if (index === -1) {
+            return "Error en la busqueda: no se encontro ningun producto con ese ID"
+        } else {
+            this.products.splice(index, 1)
+            this.#writeList()
+            return this.products
+        }
+        
+    }
+
+    async getProductToCart(pid){
+        await this.#read()
+         const index = this.products.filter(p => p.id === pid)
+         if(index.length === 0 ){
+            return false
+        } else {
+            return index
+        }
     }
 }
