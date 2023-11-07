@@ -36,7 +36,12 @@ export class CartsManager {
         if (index.length === 0) {
             return "Error en la busqueda: no se encontro ningun carrito con ese ID"
         } else {
-            return index[0].products
+            const indexReturn = index[0].products
+            if(indexReturn.length == []){
+                return "El carrito se encuentra vacio"
+            } else {
+                return indexReturn
+            }
         }
 
     }
