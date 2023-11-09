@@ -4,5 +4,5 @@ import { cartsRouter } from "./cartsRouter.js"
 
 export const apiRouter = Router()
 
-apiRouter.use("/product", productsRouter)
+apiRouter.use("/products", productsRouter)
 apiRouter.use("/carts", cartsRouter)

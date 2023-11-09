@@ -5,6 +5,9 @@ const cm = new CartsManager("./db/carts.json")
 
 export const cartsRouter = Router()
 
+cartsRouter.get("/", (req, res)=>{
+    res.json(cm.getCart())
+})
 
 cartsRouter.get("/:cid", async (req, res)=>{
     const cid = parseInt(req.params["cid"])

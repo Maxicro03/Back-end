@@ -30,6 +30,16 @@ export class CartsManager {
           }
     }
 
+    getCart(){
+        this.#read()
+        console.log(this.carts)
+        if(this.carts.length === 0){
+            return "Error en la busqueda: no se encontro ningun carrito"
+        } else {
+            return this.carts
+        }
+    }
+
     async getCartById(id){
         await this.#read()
         const index = this.carts.filter(c=> c.id === id)
