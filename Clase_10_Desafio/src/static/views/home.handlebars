@@ -1,0 +1,16 @@
+<main>
+    {{#if productsExist}}
+        <h1>Productos</h1>
+        <div class="contentCards">
+            {{#each product}}
+            <div class="card">
+                <p>Producto: {{this.id}}</p>
+                <p>{{this.title}}</p>
+                <p class="descriptionText">{{this.description}}</p>
+                <p>Precio: ${{this.price}}</p>
+                <p>Stock: {{this.stock}}</p>
+            </div>
+            {{/each}}
+        </div>
+    {{/if}}
+</main>

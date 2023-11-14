@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon --ignore products.json --ignore carts.json src/main.js",
+    "dev":"nodemon -e js,html src/main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
