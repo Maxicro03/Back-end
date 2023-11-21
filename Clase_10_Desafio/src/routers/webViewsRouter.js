@@ -16,6 +16,6 @@ webViewsRouter.get("/", (req, res)=>{
     })
 })
 
-webViewsRouter.get("/realTimeProducts", (req, res)=>{
+webViewsRouter.get("/realtimeproducts", (req, res)=>{
     res.render("realTimeProducts", {title:"Real Time Products"})
 })
