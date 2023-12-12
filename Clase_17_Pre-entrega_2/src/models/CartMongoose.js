@@ -1,7 +1,9 @@
 import mongoose from "mongoose"
+import mongoosePaginate from 'mongoose-paginate-v2'
 
 const cartsSchema = new mongoose.Schema({
     _id: { type: String, required: true },
+    name: { type: String, required: true },
     products: [{
         _id: false,
         product: { type: String, ref: "products" },
@@ -20,6 +22,6 @@ cartsSchema.pre('find', function(next){
     next()
 })
 
-
+cartsSchema.plugin(mongoosePaginate)
 
 export const Carts = mongoose.model("carts", cartsSchema)

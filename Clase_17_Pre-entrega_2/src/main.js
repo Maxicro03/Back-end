@@ -12,6 +12,7 @@ console.log(`BASE DE DATOS CONECTADA A ${MONGODB_CNX_STR}`)
 const app = express()
 
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 app.engine("handlebars", engine())
 app.set('views', './src/static/views')
 app.set("view engine", "handlebars")

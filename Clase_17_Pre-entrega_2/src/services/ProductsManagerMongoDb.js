@@ -6,8 +6,13 @@ import { randomUUID } from "crypto"
 export class ProductsManagerMongoDb {
 
     async getProducts(category, optionsPaginate) {
+        optionsPaginate.lean = true
 
-        return await Products.paginate(category, optionsPaginate)
+        if (category.category === "Todos") {
+            return await Products.paginate({}, optionsPaginate);
+        } else {
+            return await Products.paginate(category, optionsPaginate);
+        }
     }
     
     async getProductsById(id) {

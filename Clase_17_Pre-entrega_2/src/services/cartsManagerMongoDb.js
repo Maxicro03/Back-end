@@ -6,7 +6,7 @@ import { randomUUID } from "crypto"
 export class CartsManagerMongoDb {
 
     async getCart(){
-        return await Carts.find()
+        return await Carts.paginate({}, {limit: 100, lean: true})
     }
 
     async getCartById(id){
@@ -20,10 +20,10 @@ export class CartsManagerMongoDb {
         return buscada
     }
 
-    async addCart(){
+    async addCart(name){
         const _id = randomUUID()
         console.log(_id)
-        const carts = await Carts.create({_id})
+        const carts = await Carts.create({_id, name})
         return carts.toObject()
     }
 
@@ -62,6 +62,13 @@ export class CartsManagerMongoDb {
         }
         return `Se eliminó el contenido del carrito ${cid} con éxito`
     }
+
+    /*async deleteCart(cid){
+        const cart = await Carts.findByIdAndDelete(cid)
+        .lean()
+
+        return "eliminado con exito"
+    }*/
 
     async deleteProductCart(cid, pid){
         const cart = await Carts.findById(cid)

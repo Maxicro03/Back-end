@@ -1,21 +1,219 @@
-{{#if context.hayDocs}}
-{{log context.hayDocs}}
-<ul>
-  {{#each context.docs}}
-  {{log this}}
-  <li>{{this._id}}</li>
-  {{/each}}
-</ul>
-{{else}}
-nada para mostrar...<br>
-{{/if}}
-<a {{#if hasPrevPage}} href="/?limit={{limit}}&page={{prevPage}}" {{/if}}>Prev</a>
-[{{ page }}]
-<a {{#if hasNextPage}} href="/?limit={{limit}}&page={{nextPage}}" {{/if}}>Next</a><br>
-Página: <input type="text"> <button onclick="irAPag({{limit}})">ir</button>
+<div class="content" id="contentGeneral">
+  <div class="contentCarts">
+    {{#each carts.docs}}
+    <a href="/api/views/products?limit={{dates.limit}}&page={{dates.page}}{{#if dates.category}}&category={{dates.category}}{{/if}}{{#if dates.sort}}&sort={{dates.sort}}{{/if}}&cartID={{this._id}}">
+      <div class="cartBox">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <p>{{this.name}}</p>
+      </div>  
+    </a>
+    {{/each}}
+      <div class="cartBox" onclick="createCart()">
+          <i class="fa-solid fa-cart-plus"></i>
+      </div>
+  </div>
+  <div class="contentDateCarts" id="dateCarts">
+    <div class="contentFormCart" style="display: none;" id="formView">
+      <form action="/api/views/products?limit={{dates.limit}}&page={{dates.page}}{{#if dates.category}}&category={{dates.category}}{{/if}}{{#if dates.sort}}&sort={{dates.sort}}{{/if}}" method="post" class="formCreateCart">
+        <input type="text" name="cartName" placeholder="Nombre de su carrito">
+        <button type="submit" onclick="finallyCreateCart()">Crear carrito</button>
+      </form>
+    </div>
+  </div>
+  <div id="contentOpen">
+    <div class="contentFilter">
+      <div class="filterText">
+        <p>Filtros</p>
+      </div>
+      <div class="contentIcon" onclick="rotateIcon()">
+        <i class="fa-solid fa-angle-down" id="iconRotate"></i>
+      </div>
+    </div>
+    <div id="filters" style="display: none;">
+      <div>
+        <label for="">Categoria:</label>
+        <select name="" id="categorys">
+          <option value="Todos">Todos</option>
+          <option value="Comida">Comida</option>
+          <option value="Bebida">Bebida</option>
+          <option value="Snack">Snack</option>
+          <option value="Higiene">Higiene</option>
+          <option value="Infusión">Infusión</option>
+          <option value="Postre">Postre</option>
+        </select>
+      </div>
+      <div>
+        <label for="">Precio:</label>
+        <select name="" id="sortFilter">
+          <option value="default">Default</option>
+          <option value="asc">Ascendente</option>
+          <option value="desc">Descendente</option>
+        </select>
+      </div>
+      <div>
+        <label for="">Limite:</label>
+        <input type="number" id="limite">
+      </div>
+    </div>
+    <div class="contentSendRedireccion" id="redireccionContent" style="display: none;">
+      <button onclick="redireccion()">Filtrar</button>
+    </div>
+  </div>
+  {{#if context.hayDocs}}
+    <div class="contentProducts">
+      <div class="lineProductReference">
+        <div class="contentId lineRigth">
+            <p>ID</p>
+          </div>
+          <div class="contentTitleReference lineRigth">
+            <p>Title</p>
+          </div>
+          <div class="contentDescriptionReference lineRigth">
+            <p>Description</p>
+          </div>
+          <div class="contentCode lineRigth">
+            <p>Code</p>
+          </div>
+          <div class="contentPrice lineRigth"> 
+            <p>Price</p>
+          </div>
+          <div class="contentStock lineRigth">
+            <p>Stock</p>
+          </div>
+          <div class="contentCategory lineRigth">
+            <p>Category</p>
+          </div>
+      </div>
+      <hr>
+      {{#each context.docs}}
+        <div class="lineProduct">
+          <div class="contentId lineRigth">
+            <p>{{this._id}}</p>
+          </div>
+          <div class="contentTitle lineRigth">
+            <p>{{this.title}}</p>
+          </div>
+          <div class="contentDescription lineRigth">
+            <p>{{this.description}}</p>
+          </div>
+          <div class="contentCode lineRigth">
+            <p>{{this.code}}</p>
+          </div>
+          <div class="contentPrice lineRigth"> 
+            <p>${{this.price}}</p>
+          </div>
+          <div class="contentStock lineRigth">
+            <p>{{this.stock}}</p>
+          </div>
+          <div class="contentCategory lineRigth">
+            <p>{{this.category}}</p>
+          </div>
+          <div class="contentAddCart">
+            <form action="/api/views/products?limit={{dates.limit}}&page={{dates.page}}{{#if dates.category}}&category={{dates.category}}{{/if}}{{#if dates.sort}}&sort={{dates.sort}}{{/if}}" method="post">
+              <input type="text" style="display: none;" name="cid" value="{{context.cartID}}">
+              <input type="text" style="display: none;" name="pid" value="{{this._id}}">
+              <button type="submit">Add to Cart</button>
+            </form>    
+          </div>
+        </div>
+        <hr>
+      {{/each}}
+    </div>
+  {{else}}
+  <div class="content">
+    nada para mostrar...<br>
+  </div>
+  {{/if}}
+    <div class="contentPage">
+      {{#if context.hasPrevPage}}
+      <a  href="/api/views/products?limit={{context.limit}}&page={{context.prevPage}}{{#if context.category}}&category={{context.category}}{{/if}}{{#if context.sort}}&sort={{context.sort}}{{/if}}" class="pages"><button><i class="fa-solid fa-angles-left"></i></button></a>
+      {{else}}
+      <button class="btnDisable" ><i class="fa-solid fa-angles-left"></i></button>
+      {{/if}}
+      {{#if context.hasPrevPage}}
+      <a href="/api/views/products?limit={{context.limit}}&page={{context.prevPage}}{{#if context.category}}&category={{context.category}}{{/if}}{{#if context.sort}}&sort={{context.sort}}{{/if}}" class="pages"><button>{{context.prevPage}}</button></a>
+      {{/if}}
+      <div class="pagesRightnow"><p>{{ context.page }}</p></div>
+      {{#if context.hasNextPage}}
+      <a href="/api/views/products?limit={{context.limit}}&page={{context.nextPage}}{{#if context.category}}&category={{context.category}}{{/if}}{{#if context.sort}}&sort={{context.sort}}{{/if}}" class="pages"><button>{{context.nextPage}}</button></a>
+      {{/if}}
+      {{#if context.hasNextPage}}
+      <a href="/api/views/products?limit={{context.limit}}&page={{context.nextPage}}{{#if dates.category}}&category={{dates.category}}{{/if}}{{#if dates.sort}}&sort={{dates.sort}}{{/if}}" class="pages"><button><i class="fa-solid fa-angles-right"></i></button></a><br>
+      {{else}}
+      <button class="btnDisable" ><i class="fa-solid fa-angles-right"></i></button><br>
+      {{/if}}
+  </div>
+</div>
 <script>
-  function irAPag(limit) {
-    const pagDeseada = document.querySelector('input').value || 1
-    window.location = `/?limit=${limit}&page=${pagDeseada}`
+  function rotateIcon(){
+    const icon = document.getElementById("iconRotate")
+    const open =document.getElementById("contentOpen")
+    const filters =document.getElementById("filters")
+    const filtersSend =document.getElementById("redireccionContent")
+    
+    console.log("HOLAAAAA")
+    if(icon.style.transform){
+      const currentRotation = parseInt(icon.style.transform.replace("rotate(", "").replace("deg)", "")) || 0;
+
+        if(currentRotation === 0){
+        icon.style.transform = "rotate(-180deg)";
+        open.style.height = "140px"
+        setTimeout(function () {
+        filters.style.display = "flex";
+        filtersSend.style.display = "flex";
+        }, 100);
+        } else {
+            icon.style.transform = "rotate(0deg)";
+            open.style.height = "40px"
+            filters.style.display = "none"
+            filtersSend.style.display = "none"
+        }
+    } else {
+      icon.style.transform = "rotate(-180deg)";
+      open.style.height = "140px"
+      setTimeout(function () {
+        filters.style.display = "flex";
+        filtersSend.style.display = "flex";
+      }, 100);
+    }
+  
+}
+
+function redireccion(page){
+  const limite = document.getElementById("limite").value || 10
+  const category = document.getElementById("categorys").value
+  const sort = document.getElementById("sortFilter").value
+
+  if(category === "Todos" && sort === "default"){
+    window.location = `?limit=${limite}&page=1`
+  } else if(category !== "Todos" && sort === "default"){
+    window.location = `?limit=${limite}&page=1&category=${category}`
+  } else if(category === "Todos" && sort !== "default"){
+    window.location = `?limit=${limite}&page=1&sort=${sort}`
+  } else {
+    window.location = `?limit=${limite}&page=1&category=${category}&sort=${sort}`
   }
+}
+
+function createCart(){
+  const createCartContent = document.getElementById("dateCarts")
+  const form = document.getElementById("formView")
+
+  createCartContent.style.height = "40px"
+
+  setTimeout(function () {
+        form.style.display = "flex"
+      }, 100)
+
+}
+
+function finallyCreateCart(){
+  const createCartContent = document.getElementById("dateCarts")
+  const form = document.getElementById("formView")
+
+  form.style.display = "none"
+
+  createCartContent.style.height = "0px"
+}
+
 </script>
