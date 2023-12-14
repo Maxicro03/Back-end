@@ -1,5 +1,4 @@
 import { Carts } from "../models/CartMongoose.js"
-
 import { productsManager } from "./ProductsManager.js"
 import { randomUUID } from "crypto"
 
@@ -9,11 +8,16 @@ export class CartsManagerMongoDb {
         return await Carts.paginate({}, {limit: 100, lean: true})
     }
 
+    async getCartToProduct(){
+        return await Carts.paginate({}, {limit: 10, lean: true})
+    }
+
     async getCartById(id){
-        const buscada = await Carts.findById(id).populate({
+        const buscada = await Carts.paginate({_id: id}, {limit: 1, lean: true, populate: {
             path: 'products.product',
-            select: 'title price',
-        })
+            select: 'title price stock',
+        }})
+        console.log(buscada)
         if(!buscada){
             throw new Error("id no encontrado")
         }
@@ -22,9 +26,36 @@ export class CartsManagerMongoDb {
 
     async addCart(name){
         const _id = randomUUID()
-        console.log(_id)
         const carts = await Carts.create({_id, name})
         return carts.toObject()
+    }
+
+    async modifyQuantity(cid, pid, quantityNew){
+        const searchCart = await Carts.findById(cid).populate({
+            path: 'products.product',
+            select: 'title price stock',
+        })
+        const quantityModifyPosition = searchCart.products.findIndex(p => p.product._id.toString() === pid.toString())
+        console.log(quantityModifyPosition)
+        console.log(searchCart.products[quantityModifyPosition])
+        console.log(searchCart.products[quantityModifyPosition].product.stock)
+        if (quantityNew === "suma" && quantityModifyPosition !== -1) {
+            if(searchCart.products[quantityModifyPosition].quantity < searchCart.products[quantityModifyPosition].product.stock){
+                searchCart.products[quantityModifyPosition].quantity += 1;
+            } else{
+                return "No se pueden agregar mas productos"
+            }
+        } else if (quantityNew === "resta" && quantityModifyPosition !== -1 && searchCart.products[quantityModifyPosition].quantity > 0) {
+            if(searchCart.products[quantityModifyPosition].quantity > 1){
+                searchCart.products[quantityModifyPosition].quantity -= 1;
+            } else{
+                return "No se pueden seleccionar menos productos"
+            }
+            
+        }
+
+        const updatedCart = await searchCart.save();
+        return updatedCart.toObject();
     }
 
 

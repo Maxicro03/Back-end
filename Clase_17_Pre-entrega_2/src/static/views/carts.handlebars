@@ -1,0 +1,76 @@
+<header>
+  <nav class="navBar">
+    <div class="navegation">
+      <a href="carts">
+        <p>Carts</p>
+      </a>
+      <a href="products">
+        <p>Products</p>
+      </a>
+    </div>
+  </nav>
+</header>
+<main>
+    <div class="content" id="contentGeneral">
+        {{#if context.hayDocs}}
+            <div class="contentProducts">
+                <div class="lineProductReference">
+                    <div class="contentId lineRigth">
+                        <p>ID</p>
+                    </div>
+                    <div class="contentTitleReference lineRigth">
+                        <p>Nombres</p>
+                    </div>
+                    <div class="contentProductsReference lineRigth">
+                        <p>Productos</p>
+                    </div>
+                </div>
+                <hr>
+                {{#each context.docs}}
+                <div class="lineProduct">
+                    <div class="contentId lineRigth">
+                        <p>{{this._id}}</p>
+                    </div>
+                    <div class="contentTitle lineRigth">
+                        <p>{{this.name}}</p>
+                    </div>
+                    <div class="contentPorductsLength lineRigth">
+                        {{log this.products.length}}
+                        <p>{{this.products.length}}</p>
+                    </div>
+                    <div class="contentAddCart">
+                        <a href="carts/{{this._id}}">
+                            <button>View Cart</button>
+                        </a>    
+                    </div>
+                </div>
+                <hr>
+                {{/each}}
+            </div>
+        {{else}}
+        <div class="content">
+            nada para mostrar...<br>
+        </div>
+        {{/if}}
+        <div class="contentPage">
+            {{#if context.hasPrevPage}}
+            <a  href="/api/views/products?limit={{context.limit}}&page={{context.prevPage}}{{#if context.category}}&category={{context.category}}{{/if}}{{#if context.sort}}&sort={{context.sort}}{{/if}}{{#if context.cartID}}&cart={{context.cartID}}{{/if}}" class="pages"><button><i class="fa-solid fa-angles-left"></i></button></a>
+            {{else}}
+            <button class="btnDisable" ><i class="fa-solid fa-angles-left"></i></button>
+            {{/if}}
+            {{#if context.hasPrevPage}}
+            <a href="/api/views/products?limit={{context.limit}}&page={{context.prevPage}}{{#if context.category}}&category={{context.category}}{{/if}}{{#if context.sort}}&sort={{context.sort}}{{/if}}{{#if context.cartID}}&cart={{context.cartID}}{{/if}}" class="pages"><button>{{context.prevPage}}</button></a>
+            {{/if}}
+            <div class="pagesRightnow"><p>{{ context.page }}</p></div>
+            {{#if context.hasNextPage}}
+            <a href="/api/views/products?limit={{context.limit}}&page={{context.nextPage}}{{#if context.category}}&category={{context.category}}{{/if}}{{#if context.sort}}&sort={{context.sort}}{{/if}}{{#if context.cartID}}&cart={{context.cartID}}{{/if}}" class="pages"><button>{{context.nextPage}}</button></a>
+            {{/if}}
+            {{#if context.hasNextPage}}
+            <a href="/api/views/products?limit={{context.limit}}&page={{context.nextPage}}{{#if context.category}}&category={{context.category}}{{/if}}{{#if context.sort}}&sort={{context.sort}}{{/if}}{{#if context.cartID}}&cart={{context.cartID}}{{/if}}" class="pages"><button><i class="fa-solid fa-angles-right"></i></button></a><br>
+            {{else}}
+            <button class="btnDisable" ><i class="fa-solid fa-angles-right"></i></button><br>
+            {{/if}}
+        </div>
+    </div>
+    </div>
+</main>

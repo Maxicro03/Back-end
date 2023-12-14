@@ -1,0 +1,151 @@
+<header>
+  <nav class="navBar">
+    <div class="navegation">
+      <a href="/api/views/carts">
+        <p>Carts</p>
+      </a>
+      <a href="/api/views/products">
+        <p>Products</p>
+      </a>
+    </div>
+  </nav>
+</header>
+<main>
+  <div class="cartContentProducts">
+    <div class="cartName">
+      <h3>Cart</h3>
+      <p>{{cart.name}}</p>
+    </div>
+    <div class="contentDatesCart">
+      <div class="lineProductReference">
+        <div class="contentTitleCart">
+          <p>Producto</p>
+        </div>
+        <div class="contentPriceCart">
+          <p>Precio C/u</p>
+        </div>
+        <div class="contentQuantity">
+          <p>Cantidad</p>
+        </div>
+        <div class="contentTotal">
+          <p>Total</p>
+        </div>
+        <div class="contentDelete">
+          <p>Eliminar</p>
+        </div>
+      </div>
+      <hr class="hr">
+      {{#each cart.products}}
+      <div class="lineProduct" id="{{this.product._id}}">
+        <div class="contentTitleCart">
+          <p>{{this.product.title}}</p>
+        </div>
+        <div class="contentPriceCart">
+          <p>${{this.product.price}}</p>
+        </div>
+        <div class="contentQuantity" >
+          <button onclick="modifiQuantity('{{../cid}}', '{{this.product._id}}', 'resta', '{{this.product.stock}}', '{{this.product.title}}',  {{this.product.price}})"><i class="fa-solid fa-minus"></i></button>
+          <p id="valor{{this.product._id}}">{{this.quantity}}</p>
+          <button onclick="modifiQuantity('{{../cid}}', '{{this.product._id}}', 'suma', '{{this.product.stock}}', '{{this.product.title}}', {{this.product.price}})"><i class="fa-solid fa-plus"></i></button>
+        </div>
+        <div class="contentTotal" id="contentCalculate{{this.product.title}}">
+          <button onclick="calculate('{{this.product.title}}', {{this.product.price}}, {{this.quantity}})" id="btnCaculate{{this.product.title}}">Calcular</button>
+          <div id="totalPrice{{this.product.title}}" style="display: none;">
+          </div>
+        </div>
+        <div class="contentDelete">
+          <button onclick="deleteProduct('{{../cid}}', '{{this.product._id}}')"><i class="fa-solid fa-trash"></i></button>
+        </div>
+      </div>
+      <hr class="hr" id="hr{{this.product._id}}">
+      {{/each}}
+    </div>
+    </div>
+</main>
+<script>
+function calculate(title, price, quantity){
+  const totalPrice = document.getElementById(`totalPrice${title}`)
+  const btnCaculate = document.getElementById(`btnCaculate${title}`)
+  totalPrice.style.display = "flex"
+  btnCaculate.remove()
+
+  totalPrice.innerHTML = `<p>${price * quantity}</p>`
+}
+
+function modifiQuantity(cid, idProduct, value, stock, title, price){
+  const valorQuantity = document.getElementById(`valor${idProduct}`)
+  const totalPrice = document.getElementById(`totalPrice${title}`)
+  const btnCaculate = document.getElementById(`btnCaculate${title}`)
+  const contentBtnCalculate = document.getElementById(`contentCalculate${title}`)
+  const btnCalculate = document.getElementById(`btnCaculate${title}`)
+
+  console.log(contentBtnCalculate)
+  console.log("aca" + contentBtnCalculate)
+    if(value === "suma"){
+      if(parseInt(valorQuantity.innerText) < parseInt(stock)){
+        const quantityActual = parseInt(valorQuantity.innerText) + 1
+        valorQuantity.innerText = quantityActual
+        totalPrice.style.display = "none"
+        if (btnCaculate) {
+          btnCaculate.remove();  
+        }
+        contentBtnCalculate.innerHTML += `<button onclick="calculate('${title}', ${price}, ${valorQuantity.innerText})" id="btnCaculate${title}">Calcular</button>`
+      } else {
+        console.log("No se pueden agregar mas productos")
+      }
+    } else {
+      if(parseInt(valorQuantity.innerText) > 1 ){
+        const quantityActual = parseInt(valorQuantity.innerText) - 1
+        valorQuantity.innerText = quantityActual
+        totalPrice.style.display = "none"
+        if (btnCaculate) {
+          btnCaculate.remove();
+        }
+        contentBtnCalculate.innerHTML += `<button onclick="calculate('${title}', ${price}, ${valorQuantity.innerText})" id="btnCaculate${title}">Calcular</button>`
+      } else {
+        console.log("No se pueden sustraes mas productos")
+      }
+    }
+  fetch(`/api/views/carts/${cid}`, {
+      method: "PUT",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+          pid: idProduct,
+          quantity: value
+      })
+  })
+  .then(response => response.json())
+  .then(data => {
+    return data
+  })
+  .catch(error => {
+    return error
+  })
+  }
+
+  function deleteProduct(cid, idProduct){
+    const divProduct = document.getElementById(`${idProduct}`)
+    const hrProduct = document.getElementById(`hr${idProduct}`)
+    fetch(`/api/views/carts/${cid}`, {
+      method: "DELETE",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+          pid: idProduct
+      })
+  })
+  .then(response => response.json())
+  .then(data => {
+    return data
+  })
+  .catch(error => {
+    return error
+  })
+
+  divProduct.remove()
+  hrProduct.remove()
+  }
+</script>
